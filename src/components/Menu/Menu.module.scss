@@ -1,0 +1,33 @@
+@import '../../styles/variable.scss';
+
+.container{
+  padding: $padding_1;
+  height: 100vh;
+  border-right: 1px solid $border_color;
+  h1{
+    font-size: $font_size_h1;
+    margin-bottom: $margin_bottom_1;
+  }
+  .linkWrapper{
+    .link{
+      display: flex;
+      align-items: center;
+      font-size: $font_size_primary;
+      color: $font_color_grey;
+      margin-bottom: $margin_bottom_2;
+      border-radius: $border_radius_1;
+      padding: 10px;
+      &.active{
+        color: #fff;
+        background: $bg_color_grey;
+      }
+      cursor: pointer;
+      .icon{
+        margin-right: $margin_right;
+      }
+    }
+    .logoutMargin{
+      height: 40px;
+    }
+  }
+}

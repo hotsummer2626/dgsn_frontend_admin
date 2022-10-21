@@ -1,7 +1,14 @@
 import React from "react";
+import "./global.scss";
+import styles from "./App.module.scss";
+import Menu from "./components/Menu/Menu";
 
 const App = () => {
-  return <div>new project</div>;
+  return (
+    <div className={styles.container}>
+      <Menu />
+    </div>
+  );
 };
 
 export default App;

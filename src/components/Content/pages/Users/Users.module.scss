@@ -1,0 +1,39 @@
+@import "../../../../styles/variable.scss";
+
+.container {
+  .header {
+    padding: $padding_1;
+    border-bottom: 1px solid $border_color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2 {
+      font-size: $font_size_h2;
+    }
+    .iconWrapper {
+      display: flex;
+      align-items: center;
+      font-size: $font_size_primary;
+      color: #fff;
+      border-radius: $border_radius_1;
+      padding: 10px 20px;
+      background: $bg_color_grey;
+      cursor: pointer;
+      .icon {
+        margin-right: $margin_right;
+      }
+    }
+  }
+  .body {
+    font-size: $font_size_primary;
+    .listHead {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+      padding: 15px 30px;
+      border-bottom: 1px solid $border_color;
+      .filterIcon{
+        justify-self: center;
+      }
+    }
+  }
+}

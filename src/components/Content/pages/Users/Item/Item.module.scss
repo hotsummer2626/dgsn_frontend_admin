@@ -1,0 +1,8 @@
+@import '../../../../../styles/variable.scss';
+
+.container {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+  padding: 15px 30px;
+  border-bottom: 1px solid $border_color;
+}

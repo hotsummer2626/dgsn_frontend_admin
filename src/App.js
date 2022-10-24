@@ -1,15 +1,24 @@
 import React from "react";
 import "./global.scss";
-import styles from "./App.module.scss";
-import Menu from "./components/Menu/Menu";
-import Content from "./components/Content/Content";
+import Login from "./pages/Login/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import { Routes, Route } from "react-router-dom";
+import Users from "./components/Users/Users";
+import Brands from "./components/Brands/Brands";
+import Products from "./components/Products/Products";
 
 const App = () => {
   return (
-    <div className={styles.container}>
-      <Menu />
-      <Content />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<Users />} />
+          <Route path="brands" element={<Brands />} />
+          <Route path="products" element={<Products />} />
+        </Route>
+      </Routes>
+    </>
   );
 };
 

@@ -1,0 +1,111 @@
+@mixin fade {
+  .fadeEnter {
+    opacity: 0;
+  }
+  .fadeEnterActive,
+  .fadeEnterDone {
+    opacity: 1;
+    transition: 200ms ease-in-out;
+  }
+  .fadeExit {
+    opacity: 1;
+  }
+  .fadeExitActive,
+  .fadeExitDone {
+    opacity: 0;
+    transition: 200ms ease-in-out;
+  }
+}
+
+@mixin scale_fade {
+  .scaleFadeEnter {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  .scaleFadeEnterActive,
+  .scaleFadeEnterDone {
+    opacity: 1;
+    transform: scale(1);
+    transition: 200ms ease-in-out;
+  }
+  .scaleFadeExit {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .scaleFadeExitActive,
+  .scaleFadeExitDone {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: 200ms ease-in-out;
+  }
+}
+
+@mixin right_in_right_out_fade {
+  .rightInRightOutEnter {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  .rightInRightOutEnterActive,
+  .rightInRightOutEnterDone {
+    opacity: 1;
+    transform: translateX(0);
+    transition: 200ms ease-in-out;
+  }
+  .rightInRightOutExit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .rightInRightOutExitActive,
+  .rightInRightOutExitDone {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: 200ms ease-in-out;
+  }
+}
+
+@mixin right_in_left_out_fade {
+  .enter {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  .enterActive,
+  .enterDone {
+    opacity: 1;
+    transform: translateX(0);
+    transition: 200ms ease-in-out;
+  }
+  .exit {
+    opacity: 1;
+    transform: translateX(0);
+    transform: scale(1);
+  }
+  .exitActive,
+  .exitDone {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: 200ms ease-in-out;
+  }
+}
+
+@mixin up_in_up_out_fade {
+  .upInUpOutEnter {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+  .upInUpOutEnterActive,
+  .upInUpOutEnterDone {
+    opacity: 1;
+    transform: translateY(0);
+    transition: 200ms ease-in-out;
+  }
+  .upInUpOutExit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .upInUpOutExitActive,
+  .upInUpOutExitDone {
+    opacity: 0;
+    transform: translateY(-30%);
+    transition: 200ms ease-in-out;
+  }
+}

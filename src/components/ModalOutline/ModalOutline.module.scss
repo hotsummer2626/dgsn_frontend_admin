@@ -1,0 +1,41 @@
+@import '../../styles/variable.scss';
+
+.container {
+  width: 400px;
+  border-radius: 20px;
+  background: $bg_color_grey;
+  padding: 10px 15px 15px;
+  color: #fff;
+  .close {
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    .icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
+  }
+  .buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    button {
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      background: #202937;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width:576px) {
+  .container{
+    width: 340px;
+  }
+}

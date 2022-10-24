@@ -1,4 +1,4 @@
-@import "../../../../styles/variable.scss";
+@import "../../styles/variable.scss";
 
 .container {
   .header {
@@ -21,18 +21,6 @@
       cursor: pointer;
       .icon {
         margin-right: $margin_right;
-      }
-    }
-  }
-  .body {
-    font-size: $font_size_primary;
-    .listHead {
-      display: grid;
-      grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
-      padding: 15px 30px;
-      border-bottom: 1px solid $border_color;
-      .filterIcon{
-        justify-self: center;
       }
     }
   }

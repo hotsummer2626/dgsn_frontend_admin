@@ -17,7 +17,11 @@ const Users = () => {
   useEffect(() => {
     getUsers()
       .then((res) => {
-        dispatch(setUsers(res.data.users));
+        if (!res.errors) {
+          dispatch(setUsers(res.data.users));
+        } else {
+          alert(res.errors[0].message);
+        }
       })
       .catch((err) => alert(err));
   }, []);

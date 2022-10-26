@@ -6,8 +6,8 @@ export const uploadImgToS3 = (file, dirName) => {
     bucketName: "sunny-dgsn",
     dirName,
     region: "us-east-1",
-    accessKeyId: "AKIA25EBUAKEUDJWTLPX",
-    secretAccessKey: "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",
+    accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+    secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
   };
   return uploadFile(file, config);
 };

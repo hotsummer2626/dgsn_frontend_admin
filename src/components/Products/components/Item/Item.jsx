@@ -7,26 +7,74 @@ import {
   faCheck,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getProductById } from "../../../../store/apis/product";
+import { UploadImg, Select, Input } from "../../../FormElements/FormElements";
+import { getBrands } from "../../../../store/apis/brand";
+import { setBrands } from "../../../../store/slices/brands";
+import { uploadImgToCloudinary } from "../../../../store/apis/upload";
 
 const Item = ({ product }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [editData, setEditData] = useState({
-    brandName: "",
-    brandImgSrc: "",
+    productName: "",
+    productBrand: "",
+    productPrice: "",
+    productExpireDate: "",
+    productImgSrc: "",
   });
+  const [selectValue, setSelectValue] = useState("");
+  const {
+    brandData: { brands },
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const onEditHandler = () => {
-    // getUserById(user._id)
-    //   .then((res) => {
-    //     setIsEdit(true);
-    //     setEditData({
-    //       ...editData,
-    //       username: res.data.user.username,
-    //     });
-    //   })
-    //   .catch((err) => alert(err));
+    getProductById(product._id)
+      .then((res) => {
+        if (!res.errors) {
+          setIsEdit(true);
+          setEditData({
+            ...editData,
+            productName: res.data.product.name,
+            productBrand: res.data.product._id,
+            productPrice: res.data.product.price,
+            productExpireDate: res.data.product.expireDate,
+            productImgSrc: res.data.product.imgSrc,
+          });
+          setSelectValue(res.data.product.brand.name);
+        } else {
+          alert(res.errors[0].message);
+        }
+      })
+      .catch((err) => alert(err));
+  };
+
+  const uploadImgHandler = (e) => {
+    uploadImgToCloudinary(e.target.files[0], "products").then((res) => {
+      setEditData({
+        ...editData,
+        productImgSrc: res.secure_url,
+      }).catch((err) => alert(err));
+    });
+  };
+
+  const fetchOptions = () => {
+    getBrands()
+      .then((res) => {
+        if (!res.errors) {
+          dispatch(setBrands(res.data.brands));
+        } else alert(res.errors[0].message);
+      })
+      .catch((err) => alert(err));
+  };
+
+  const onSelectChangeHandler = (brand) => {
+    setEditData({
+      ...editData,
+      productBrand: brand._id,
+    });
+    setSelectValue(brand.name);
   };
 
   const confirmEditHandler = () => {
@@ -41,37 +89,72 @@ const Item = ({ product }) => {
   };
 
   const cancelEditHandler = () => {
-    // setIsEdit(false);
-    // setEditData({
-    //   username: "",
-    //   role: "Admin",
-    // });
+    setIsEdit(false);
+    setEditData({
+      productName: "",
+      productBrand: "",
+      productPrice: "",
+      productExpireDate: "",
+      productImgSrc: "",
+    });
+    setSelectValue("");
   };
 
-  const inputHandler = (inputName) => (e) =>
+  const inputChangeHandler = (inputName) => (e) => {
+    let value = e.target.value;
+    if (
+      inputName === "productPrice" &&
+      "" !== value.replace(/\d{1,}\.{0,1}\d{0,}/, "")
+    ) {
+      value =
+        value.match(/\d{1,}\.{0,1}\d{0,}/) === null
+          ? ""
+          : value.match(/\d{1,}\.{0,1}\d{0,}/);
+    }
     setEditData({
       ...editData,
-      [inputName]: e.target.value,
+      [inputName]: value,
     });
-
+  };
   return (
     <div className={styles.container}>
       {isEdit ? (
         <>
-          {/* <input
-            type="text"
-            value={editData.username}
-            onChange={inputHandler("username")}
+          <UploadImg
+            className={styles.editInput}
+            imgSrc={editData.productImgSrc}
+            text="Choose A New Photo"
+            onChange={uploadImgHandler}
           />
-          <input
+          <Input
+            className={styles.editInput}
             type="text"
-            value={editData.role}
-            onChange={inputHandler("role")}
-          /> */}
+            value={editData.productName}
+            onChange={inputChangeHandler("productName")}
+          />
+          <Select
+            className={styles.editInput}
+            value={selectValue}
+            options={brands}
+            fetchOptions={fetchOptions}
+            onChange={onSelectChangeHandler}
+          />
+          <Input
+            className={styles.editInput}
+            type="text"
+            value={editData.productPrice}
+            onChange={inputChangeHandler("productPrice")}
+          />
+          <Input
+            className={styles.editInput}
+            type="date"
+            value={editData.productExpireDate}
+            onChange={inputChangeHandler("productExpireDate")}
+          />
         </>
       ) : (
         <>
-          <div className={styles.imgWrapper}>
+          <div className={styles.displayImgWrapper}>
             <img src={product.imgSrc} alt="logo" />
           </div>
           <div>{product.name}</div>

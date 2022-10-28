@@ -5,12 +5,13 @@
   grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
   padding: 15px 30px;
   border-bottom: 1px solid $border_color;
-  input {
-    width: 70%;
+  .editInput {
+    width: 90%;
+    align-self: center;
   }
   div {
     align-self: center;
-    &.imgWrapper {
+    &.displayImgWrapper {
       border: 1px solid $border_color;
       width: max-content;
       img {

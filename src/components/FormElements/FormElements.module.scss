@@ -1,0 +1,63 @@
+@import "../../styles/variable.scss";
+@import "../../styles/mixins.scss";
+
+.input,
+.selectWrapper,
+.uploadWrapper {
+  @include input;
+}
+
+.selectWrapper {
+  position: relative;
+  .select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    .icon {
+      transform: rotate(180deg);
+      transition: 0.3s;
+      &.active {
+        transform: rotate(0);
+      }
+    }
+  }
+  .options {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: #202937;
+    max-height: 90px;
+    border-radius: $border_radius_1;
+    overflow-y: overlay;
+    .option {
+      height: 40px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: $border_radius_1;
+      cursor: pointer;
+      &:hover {
+        background: $bg_color_grey;
+      }
+      div {
+        height: 100%;
+        img {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.uploadWrapper {
+  label {
+    cursor: pointer;
+  }
+  .imgWrapper {
+    padding-top: 10px;
+    img {
+      max-width: 100%;
+    }
+  }
+}

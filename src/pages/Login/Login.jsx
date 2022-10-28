@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login as loginFn } from "../../store/apis/auth";
 import { login } from "../../store/slices/auth";
+import { Select } from "../../components/FormElements/FormElements";
 
 const Login = () => {
   const [activeInput, setActiveInput] = useState({

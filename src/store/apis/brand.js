@@ -35,3 +35,23 @@ export const createBrand = (brand) =>
       `,
     },
   }).then((res) => res.data);
+
+  export const getBrandById = (id) =>
+  axios({
+    method: "POST",
+    url: `${baseUrl}/graphql`,
+    data: {
+      query: `
+        query ($brandId: ID) {
+          brand(id: $brandId) {
+            _id
+            name
+            imgSrc
+          }
+        }
+      `,
+      variables: {
+        brandId: id,
+      },
+    },
+  }).then((res) => res.data);

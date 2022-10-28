@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import styles from "./CreateBrandModal.module.scss";
 import ModalOutline from "../../../ModalOutline/ModalOutline";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { uploadImgToS3 } from "../../../../store/apis/upload";
+import { uploadImgToCloudinary } from "../../../../store/apis/upload";
 import { createBrand } from "../../../../store/apis/brand";
 import { addBrand } from "../../../../store/slices/brands";
 import { useDispatch } from "react-redux";
+import { Input, UploadImg } from "../../../FormElements/FormElements";
 
 const CreateBrandModal = ({ setIsModalShow }) => {
   const [formData, setFormData] = useState({
@@ -16,12 +15,12 @@ const CreateBrandModal = ({ setIsModalShow }) => {
   const dispatch = useDispatch();
 
   const uploadImgHandler = (e) => {
-    uploadImgToS3(e.target.files[0], "brands")
+    uploadImgToCloudinary(e.target.files[0], "brands")
       .then((res) => {
         setFormData({
           ...formData,
-          brandImgSrc: res.location,
-        });
+          brandImgSrc: res.secure_url
+        })
       })
       .catch((err) => alert(err));
   };
@@ -51,9 +50,8 @@ const CreateBrandModal = ({ setIsModalShow }) => {
       <form className={styles.createBrandForm}>
         <div className={styles.formItem}>
           <div className={styles.label}>Name:</div>
-          <input
+          <Input
             type="text"
-            id="brandName"
             value={formData.brandName}
             onChange={(e) =>
               setFormData({
@@ -65,24 +63,11 @@ const CreateBrandModal = ({ setIsModalShow }) => {
         </div>
         <div className={styles.formItem}>
           <div className={styles.label}>Logo Image:</div>
-          <div className={styles.uploadWrapper}>
-            {formData.brandImgSrc && (
-              <div className={styles.imgWrapper}>
-                <img src={formData.brandImgSrc} alt="brand logo" />
-              </div>
-            )}
-            <label htmlFor="brandImgSrc">
-              <FontAwesomeIcon icon={faUpload} />
-              &nbsp; Choose A Photo
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              id="brandImgSrc"
-              style={{ display: "none" }}
-              onChange={uploadImgHandler}
-            />
-          </div>
+          <UploadImg
+            imgSrc={formData.brandImgSrc}
+            text="Choose A Photo"
+            onChange={uploadImgHandler}
+          />
         </div>
       </form>
     </ModalOutline>

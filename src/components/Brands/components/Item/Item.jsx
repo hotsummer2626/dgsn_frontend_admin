@@ -8,6 +8,9 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
+import { getBrandById } from "../../../../store/apis/brand";
+import { uploadImgToCloudinary } from "../../../../store/apis/upload";
+import { Input, UploadImg } from "../../../FormElements/FormElements";
 
 const Item = ({ brand }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -18,15 +21,31 @@ const Item = ({ brand }) => {
   const dispatch = useDispatch();
 
   const onEditHandler = () => {
-    // getUserById(user._id)
-    //   .then((res) => {
-    //     setIsEdit(true);
-    //     setEditData({
-    //       ...editData,
-    //       username: res.data.user.username,
-    //     });
-    //   })
-    //   .catch((err) => alert(err));
+    getBrandById(brand._id)
+      .then((res) => {
+        if (!res.errors) {
+          setIsEdit(true);
+          setEditData({
+            ...editData,
+            brandName: res.data.brand.name,
+            brandImgSrc: res.data.brand.imgSrc,
+          });
+        } else {
+          alert(res.errors[0].message);
+        }
+      })
+      .catch((err) => alert(err));
+  };
+
+  const uploadImgHandler = (e) => {
+    uploadImgToCloudinary(e.target.files[0], "brands")
+      .then((res) => {
+        setEditData({
+          ...editData,
+          brandImgSrc: res.secure_url,
+        });
+      })
+      .catch((err) => alert(err));
   };
 
   const confirmEditHandler = () => {
@@ -41,11 +60,11 @@ const Item = ({ brand }) => {
   };
 
   const cancelEditHandler = () => {
-    // setIsEdit(false);
-    // setEditData({
-    //   username: "",
-    //   role: "Admin",
-    // });
+    setIsEdit(false);
+    setEditData({
+      brandName: "",
+      brandImgSrc: "",
+    });
   };
 
   const inputHandler = (inputName) => (e) =>
@@ -58,20 +77,22 @@ const Item = ({ brand }) => {
     <div className={styles.container}>
       {isEdit ? (
         <>
-          <input
-            type="text"
-            value={editData.username}
-            onChange={inputHandler("username")}
+          <UploadImg
+            className={styles.editInput}
+            imgSrc={editData.brandImgSrc}
+            text="Choose A New Photo"
+            onChange={uploadImgHandler}
           />
-          <input
+          <Input
+            className={styles.editInput}
             type="text"
-            value={editData.role}
-            onChange={inputHandler("role")}
+            value={editData.brandName}
+            onChange={inputHandler("brandName")}
           />
         </>
       ) : (
         <>
-          <div className={styles.imgWrapper}>
+          <div className={styles.displayImgWrapper}>
             <img src={brand.imgSrc} alt="logo" />
           </div>
           <div>{brand.name}</div>

@@ -45,3 +45,29 @@ export const getProducts = () =>
       `,
     },
   }).then((res) => res.data);
+
+  export const getProductById = (id) =>
+  axios({
+    method: "POST",
+    url: `${baseUrl}/graphql`,
+    data: {
+      query: `
+        query ($productId: ID) {
+          product(id: $productId) {
+            _id
+            brand {
+              _id
+              name
+            }
+            imgSrc
+            name
+            price
+            expireDate
+          }
+        }
+      `,
+      variables: {
+        productId: id,
+      },
+    },
+  }).then((res) => res.data);

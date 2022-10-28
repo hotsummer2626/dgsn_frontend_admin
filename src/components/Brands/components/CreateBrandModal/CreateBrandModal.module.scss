@@ -6,34 +6,6 @@
     .label {
       align-self: center;
     }
-    input {
-      background: #202937;
-      height: 40px;
-      border-radius: 10px;
-      padding: 10px;
-      color: #fff;
-      font-size: 15px;
-    }
-    .uploadWrapper {
-      background: #202937;
-      max-width: 100%;
-      min-height: 40px;
-      line-height: 40px;
-      border-radius: 10px;
-      padding-left: 10px;
-      padding-right: 10px;
-      label {
-        color: #fff;
-        font-size: 15px;
-        cursor: pointer;
-      }
-      .imgWrapper {
-        padding-top: 10px;
-        img {
-          max-width: 100%;
-        }
-      }
-    }
   }
 }
 

@@ -30,8 +30,7 @@ const Products = () => {
   const createHandler = () => {
     setIsModalShow(true);
   };
-  console.log(products)
-  return (
+    return (
     <ContentLayout title="Products" createHandler={createHandler}>
       <div className={styles.body}>
         <div className={styles.listHead}>

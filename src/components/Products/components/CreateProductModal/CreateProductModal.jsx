@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import styles from "./CreateProductModal.module.scss";
 import ModalOutline from "../../../ModalOutline/ModalOutline";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { uploadImgToS3 } from "../../../../store/apis/upload";
+import { uploadImgToCloudinary } from "../../../../store/apis/upload";
 import { getBrands } from "../../../../store/apis/brand";
 import { createProduct } from "../../../../store/apis/product";
 import { setBrands } from "../../../../store/slices/brands";
 import { addProduct } from "../../../../store/slices/products";
 import { useSelector, useDispatch } from "react-redux";
+import { Input, Select, UploadImg } from "../../../FormElements/FormElements";
 
 const CreateBrandModal = ({ setIsModalShow }) => {
   const [formData, setFormData] = useState({
@@ -19,20 +18,17 @@ const CreateBrandModal = ({ setIsModalShow }) => {
     productImgSrc: null,
   });
   const [selectValue, setSelectValue] = useState("Please select a brand");
-  const [isSelectOptionsShow, setIsSelectOptionsShow] = useState(false);
   const {
     brandData: { brands },
-    productData:{products}
   } = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.log(products)
 
   const uploadImgHandler = (e) => {
-    uploadImgToS3(e.target.files[0], "products")
+    uploadImgToCloudinary(e.target.files[0], "products")
       .then((res) => {
         setFormData({
           ...formData,
-          productImgSrc: res.location,
+          productImgSrc: res.secure_url,
         });
       })
       .catch((err) => alert(err));
@@ -55,11 +51,7 @@ const CreateBrandModal = ({ setIsModalShow }) => {
     });
   };
 
-  const onClickSelectHandler = () => {
-    if (brands) {
-      return setIsSelectOptionsShow(!isSelectOptionsShow);
-    }
-    setIsSelectOptionsShow(true);
+  const fetchOptions = () => {
     getBrands()
       .then((res) => {
         if (!res.errors) {
@@ -69,13 +61,12 @@ const CreateBrandModal = ({ setIsModalShow }) => {
       .catch((err) => alert(err));
   };
 
-  const onClickOptionHandler = (brand) => () => {
+  const onSelectChangeHandler = (brand) => {
     setFormData({
       ...formData,
       productBrand: brand._id,
     });
     setSelectValue(brand.name);
-    setIsSelectOptionsShow(false);
   };
 
   const createProductHandler = () => {
@@ -124,83 +115,44 @@ const CreateBrandModal = ({ setIsModalShow }) => {
       <form className={styles.createProductForm}>
         <div className={styles.formItem}>
           <div className={styles.label}>Name:</div>
-          <input
+          <Input
             type="text"
-            id="productName"
             value={formData.productName}
             onChange={inputChangeHandler("productName")}
           />
         </div>
         <div className={styles.formItem}>
           <div className={styles.label}>Brand:</div>
-          <div className={styles.selectWrapper}>
-            <div className={styles.select} onClick={onClickSelectHandler}>
-              <div>{selectValue}</div>
-              <div
-                className={`${styles.icon} ${
-                  isSelectOptionsShow ? styles.active : ""
-                }`}
-              >
-                <FontAwesomeIcon icon={faChevronUp} />
-              </div>
-            </div>
-            {isSelectOptionsShow && (
-              <div className={styles.options}>
-                {brands &&
-                  brands.map((brand) => (
-                    <div
-                      key={brand._id}
-                      className={styles.option}
-                      onClick={onClickOptionHandler(brand)}
-                    >
-                      <div>
-                        <img src={brand.imgSrc} alt="brand logo" />
-                      </div>
-                      <div>{brand.name}</div>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
+          <Select
+            value={selectValue}
+            options={brands}
+            fetchOptions={fetchOptions}
+            onChange={onSelectChangeHandler}
+          />
         </div>
         <div className={styles.formItem}>
           <div className={styles.label}>Price:</div>
-          <input
+          <Input
             type="text"
-            id="productPrice"
             value={formData.productPrice}
             onChange={inputChangeHandler("productPrice")}
           />
         </div>
         <div className={styles.formItem}>
           <div className={styles.label}>Expire Date:</div>
-          <input
+          <Input
             type="date"
-            id="productExpireDate"
             value={formData.productExpireDate}
             onChange={inputChangeHandler("productExpireDate")}
           />
         </div>
         <div className={styles.formItem}>
           <div className={styles.label}>Image:</div>
-          <div className={styles.uploadWrapper}>
-            {formData.productImgSrc && (
-              <div className={styles.imgWrapper}>
-                <img src={formData.productImgSrc} alt="product logo" />
-              </div>
-            )}
-            <label htmlFor="productImgSrc">
-              <FontAwesomeIcon icon={faUpload} />
-              &nbsp; Choose A Photo
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              id="productImgSrc"
-              style={{ display: "none" }}
-              onChange={uploadImgHandler}
-            />
-          </div>
+          <UploadImg
+            text="Choose A Photo"
+            imgSrc={formData.productImgSrc}
+            onChange={uploadImgHandler}
+          />
         </div>
       </form>
     </ModalOutline>

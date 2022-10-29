@@ -68,7 +68,6 @@ const CreateBrandModal = ({ setIsModalShow }) => {
     });
     setSelectValue(brand.name);
   };
-
   const createProductHandler = () => {
     const {
       productName,

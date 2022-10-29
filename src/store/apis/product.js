@@ -46,7 +46,7 @@ export const getProducts = () =>
     },
   }).then((res) => res.data);
 
-  export const getProductById = (id) =>
+export const getProductById = (id) =>
   axios({
     method: "POST",
     url: `${baseUrl}/graphql`,
@@ -68,6 +68,31 @@ export const getProducts = () =>
       `,
       variables: {
         productId: id,
+      },
+    },
+  }).then((res) => res.data);
+
+export const updateProduct = (newProduct) =>
+  axios({
+    method: "POST",
+    url: `${baseUrl}/graphql`,
+    data: {
+      query: `
+        mutation ($product: UpdateProductInput) {
+          updateProduct(product: $product) {
+            _id
+            name
+            brand {
+              name
+            }
+            imgSrc
+            price
+            expireDate
+          }
+        }
+      `,
+      variables: {
+        product: newProduct,
       },
     },
   }).then((res) => res.data);

@@ -18,9 +18,15 @@ export const productSlice = createSlice({
         state.products = [...state.products, action.payload];
       }
     },
+    updateProduct: (state, action) => {
+      const index = state.products.findIndex(
+        (product) => product._id === action.payload._id
+      );
+      state.products[index] = action.payload;
+    },
   },
 });
 
-export const { setProducts, addProduct } = productSlice.actions;
+export const { setProducts, addProduct, updateProduct } = productSlice.actions;
 
 export default productSlice.reducer;

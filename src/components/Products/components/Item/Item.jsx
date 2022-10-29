@@ -13,6 +13,8 @@ import { UploadImg, Select, Input } from "../../../FormElements/FormElements";
 import { getBrands } from "../../../../store/apis/brand";
 import { setBrands } from "../../../../store/slices/brands";
 import { uploadImgToCloudinary } from "../../../../store/apis/upload";
+import { updateProduct as updateProductFn } from "../../../../store/apis/product";
+import { updateProduct } from "../../../../store/slices/products";
 
 const Item = ({ product }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -37,7 +39,7 @@ const Item = ({ product }) => {
           setEditData({
             ...editData,
             productName: res.data.product.name,
-            productBrand: res.data.product._id,
+            productBrand: res.data.product.brand._id,
             productPrice: res.data.product.price,
             productExpireDate: res.data.product.expireDate,
             productImgSrc: res.data.product.imgSrc,
@@ -76,16 +78,38 @@ const Item = ({ product }) => {
     });
     setSelectValue(brand.name);
   };
-
   const confirmEditHandler = () => {
-    // setIsEdit(false);
-    // dispatch(
-    //   updateUser({
-    //     id: user._id,
-    //     username: editData.username,
-    //     role: "Admin",
-    //   })
-    // );
+    const {
+      productName,
+      productBrand,
+      productPrice,
+      productExpireDate,
+      productImgSrc,
+    } = editData;
+    if (
+      productName === "" ||
+      productBrand === "" ||
+      productPrice === "" ||
+      productExpireDate === "" ||
+      productImgSrc === null
+    ) {
+      return alert("Input cannot be blank");
+    }
+    updateProductFn({
+      id: product._id,
+      name: editData.productName,
+      brand: editData.productBrand,
+      price: +editData.productPrice,
+      expireDate: editData.productExpireDate,
+      imgSrc: editData.productImgSrc,
+    })
+      .then((res) => {
+        if (!res.error) {
+          dispatch(updateProduct(res.data.updateProduct));
+        }
+        setIsEdit(false);
+      })
+      .catch((err) => alert(err));
   };
 
   const cancelEditHandler = () => {

@@ -68,7 +68,7 @@ const CreateBrandModal = ({ setIsModalShow }) => {
     });
     setSelectValue(brand.name);
   };
-  const createProductHandler = () => {
+  const createProductHandler = (closeModal) => {
     const {
       productName,
       productBrand,
@@ -95,7 +95,7 @@ const CreateBrandModal = ({ setIsModalShow }) => {
       .then((res) => {
         if (!res.errors) {
           dispatch(addProduct(res.data.createProduct));
-          setIsModalShow(false);
+          closeModal();
         } else {
           alert(res.errors[0].message);
         }

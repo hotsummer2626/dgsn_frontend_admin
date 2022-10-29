@@ -13,6 +13,8 @@ import { uploadImgToCloudinary } from "../../../../store/apis/upload";
 import { Input, UploadImg } from "../../../FormElements/FormElements";
 import { updateBrand as updateBrandFn } from "../../../../store/apis/brand";
 import { updateBrand } from "../../../../store/slices/brands";
+import Transition from "../../../TransitionContainers/Transition/Transition";
+import DeleteBrandModal from "../DeleteBrandModal/DeleteBrandModal";
 
 const Item = ({ brand }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -20,6 +22,7 @@ const Item = ({ brand }) => {
     brandName: "",
     brandImgSrc: "",
   });
+  const [isModalShow, setIsModalShow] = useState(false);
   const dispatch = useDispatch();
 
   const onEditHandler = () => {
@@ -119,8 +122,14 @@ const Item = ({ brand }) => {
         )}
       </div>
       <div className={styles.icon}>
-        <FontAwesomeIcon icon={faTrashCan} />
+        <FontAwesomeIcon
+          icon={faTrashCan}
+          onClick={() => setIsModalShow(true)}
+        />
       </div>
+      <Transition isShow={isModalShow} className="fade">
+        <DeleteBrandModal brandId={brand._id} setIsModalShow={setIsModalShow} />
+      </Transition>
     </div>
   );
 };

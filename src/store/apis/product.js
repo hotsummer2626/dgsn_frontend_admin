@@ -96,3 +96,19 @@ export const updateProduct = (newProduct) =>
       },
     },
   }).then((res) => res.data);
+
+export const deleteProduct = (id) =>
+  axios({
+    method: "POST",
+    url: `${baseUrl}/graphql`,
+    data: {
+      query: `
+        mutation ($deleteProductId: ID) {
+          deleteProduct(id: $deleteProductId)
+        }
+      `,
+      variables: {
+        deleteProductId: id,
+      },
+    },
+  }).then((res) => res.data);

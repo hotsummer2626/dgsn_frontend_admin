@@ -75,3 +75,19 @@ export const updateBrand = (newBrand) =>
       },
     },
   }).then((res) => res.data);
+
+export const deleteBrand = (id) =>
+  axios({
+    method: "POST",
+    url: `${baseUrl}/graphql`,
+    data: {
+      query: `
+        mutation ($deleteBrandId: ID) {
+          deleteBrand(id: $deleteBrandId)
+        }
+      `,
+      variables: {
+        deleteBrandId: id,
+      },
+    },
+  }).then((res) => res.data);

@@ -19,13 +19,13 @@ const CreateBrandModal = ({ setIsModalShow }) => {
       .then((res) => {
         setFormData({
           ...formData,
-          brandImgSrc: res.secure_url
-        })
+          brandImgSrc: res.secure_url,
+        });
       })
       .catch((err) => alert(err));
   };
 
-  const createBrandHandler = () => {
+  const createBrandHandler = (closeModal) => {
     const { brandName, brandImgSrc } = formData;
     if (brandName === "" || brandImgSrc === null) {
       return alert("Brand name or brand logo cannot be blank");
@@ -34,7 +34,7 @@ const CreateBrandModal = ({ setIsModalShow }) => {
       .then((res) => {
         if (!res.errors) {
           dispatch(addBrand(res.data.createBrand));
-          setIsModalShow(false);
+          closeModal();
         } else {
           alert(res.errors[0].message);
         }

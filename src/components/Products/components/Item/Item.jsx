@@ -15,6 +15,8 @@ import { setBrands } from "../../../../store/slices/brands";
 import { uploadImgToCloudinary } from "../../../../store/apis/upload";
 import { updateProduct as updateProductFn } from "../../../../store/apis/product";
 import { updateProduct } from "../../../../store/slices/products";
+import Transition from "../../../TransitionContainers/Transition/Transition";
+import DeleteProductModal from "../DeleteProductModal/DeleteProductModal";
 
 const Item = ({ product }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -25,6 +27,7 @@ const Item = ({ product }) => {
     productExpireDate: "",
     productImgSrc: "",
   });
+  const [isModalShow, setIsModalShow] = useState(false);
   const [selectValue, setSelectValue] = useState("");
   const {
     brandData: { brands },
@@ -140,6 +143,7 @@ const Item = ({ product }) => {
       [inputName]: value,
     });
   };
+
   return (
     <div className={styles.container}>
       {isEdit ? (
@@ -198,8 +202,17 @@ const Item = ({ product }) => {
         )}
       </div>
       <div className={styles.icon}>
-        <FontAwesomeIcon icon={faTrashCan} />
+        <FontAwesomeIcon
+          icon={faTrashCan}
+          onClick={() => setIsModalShow(true)}
+        />
       </div>
+      <Transition isShow={isModalShow} className="fade">
+        <DeleteProductModal
+          productId={product._id}
+          setIsModalShow={setIsModalShow}
+        />
+      </Transition>
     </div>
   );
 };

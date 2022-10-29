@@ -18,9 +18,15 @@ export const brandSlice = createSlice({
         state.brands = [...state.brands, action.payload];
       }
     },
+    updateBrand: (state, action) => {
+      const index = state.brands.findIndex(
+        (brand) => brand._id === action.payload._id
+      );
+      state.brands[index] = action.payload;
+    },
   },
 });
 
-export const { setBrands, addBrand } = brandSlice.actions;
+export const { setBrands, addBrand, updateBrand } = brandSlice.actions;
 
 export default brandSlice.reducer;

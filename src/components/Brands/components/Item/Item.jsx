@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import { getBrandById } from "../../../../store/apis/brand";
 import { uploadImgToCloudinary } from "../../../../store/apis/upload";
 import { Input, UploadImg } from "../../../FormElements/FormElements";
+import { updateBrand as updateBrandFn } from "../../../../store/apis/brand";
+import { updateBrand } from "../../../../store/slices/brands";
 
 const Item = ({ brand }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -49,14 +51,22 @@ const Item = ({ brand }) => {
   };
 
   const confirmEditHandler = () => {
-    // setIsEdit(false);
-    // dispatch(
-    //   updateUser({
-    //     id: user._id,
-    //     username: editData.username,
-    //     role: "Admin",
-    //   })
-    // );
+    const { brandName, brandImgSrc } = editData;
+    if (brandName === "" || brandImgSrc === null) {
+      return alert("Brand name or brand logo cannot be blank");
+    }
+    updateBrandFn({
+      id: brand._id,
+      name: editData.brandName,
+      imgSrc: editData.brandImgSrc,
+    })
+      .then((res) => {
+        if (!res.error) {
+          dispatch(updateBrand(res.data.updateBrand));
+        }
+        setIsEdit(false);
+      })
+      .catch((err) => alert(err));
   };
 
   const cancelEditHandler = () => {
